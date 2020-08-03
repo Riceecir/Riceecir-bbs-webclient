@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { getDataType } from '@/utils/utils.js'
-import { routerMode } from '@/config/setting'
+import { routerMode } from '@/config'
 Vue.use(VueRouter)
 
 const routes = []

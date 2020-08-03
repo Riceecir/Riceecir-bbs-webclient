@@ -1,19 +1,27 @@
 import axios from 'axios'
-import API_HOST_CONFIG from '@/config/api.host.js'
+import API_HOST_CONFIG from '@/config/request.js'
 /* 消息弹窗 */
-// import { Message } from 'element-ui'
 import * as snackbar from '@/components/Snackbar/index'
 
 axios.defaults.baseURL = API_HOST_CONFIG.BASE_API_HOST
 axios.defaults.headers.common['Content-Type'] = API_HOST_CONFIG.HEADER['Content-Type']
 
+// 包装一下
+let close = null
+const $snackbar = {}
+for (const i in snackbar) {
+  $snackbar[i] = options => {
+    typeof close === 'function' && close()
+    close = snackbar[i](options)
+  }
+}
 /* 请求拦截 */
 axios.interceptors.request.use(
   config => {
     return config
   },
   error => {
-    snackbar.error({
+    $snackbar.error({
       top: true,
       msg: `发起请求出错${error.message}`
     })
@@ -32,17 +40,17 @@ axios.interceptors.response.use(
       return data
     } else if (code === 'fail') {
       if (msg) {
-        snackbar.warn({
+        $snackbar.warn({
           top: true,
           msg: `${data.msg}`
         })
       }
-      return Promise.reject(data)
+      return Promise.resolve(data)
     } else return data
   },
 
   error => {
-    snackbar.error({
+    $snackbar.error({
       top: true,
       msg: `发起请求出错${error.message}`
     })
@@ -50,4 +58,10 @@ axios.interceptors.response.use(
   }
 )
 
-export default axios
+export default async options => {
+  try {
+    return await axios(options)
+  } catch (err) {
+    return new Error(err)
+  }
+}

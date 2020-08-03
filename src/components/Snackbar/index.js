@@ -13,12 +13,12 @@ const createSnackbarToApp = function (fnName = 'info', options = {}) {
 }
 
 /** 暴露的方法
- * @param 包含 vuetify snackbar props熟悉，参考：https://vuetifyjs.com/zh-Hans/components/snackbars/
+ * @param | vuetify snackbar props，参考：https://vuetifyjs.com/zh-Hans/components/snackbars/
  * 在此基础上增加属性：
  * @param {string} options.msg: 显示的消息
  * @param {string || vue render} options.closeBtn: 关闭按钮文字或者vue render函数
  *
- * @returns {Promise Object<action: 'close'>} Object.action: 用户行为,
+ * @returns { Function } close: 调用此方法可以立即关闭弹窗
  */
 export const info = function (options) {
   return createSnackbarToApp('info', options)

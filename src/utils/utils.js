@@ -80,21 +80,17 @@ export const setRoutePathParams = (object) => {
 }
 
 /* 函数防抖 */
+let _function = false
 export const debounce = (callback, time = 300) => {
-  let _function = false
+  clearTimeout(_function)
+  _function = setTimeout(callback, time)
 
-  /* 利用闭包使每一个定时器都在独立的作用域 */
-  return (function () {
-    clearTimeout(_function)
-    _function = setTimeout(callback, time)
-
-    /* 返回终止的方法 */
-    return {
-      stop: () => {
-        clearTimeout(_function)
-      }
+  /* 返回终止的方法 */
+  return {
+    stop: () => {
+      clearTimeout(_function)
     }
-  })()
+  }
 }
 
 /* 对象'.'表示法字符串查询数据 */

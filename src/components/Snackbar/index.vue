@@ -4,7 +4,7 @@
       <v-icon :class="color" class="icon">{{icon}}</v-icon>
       {{ msg || 'message' }}
     </span>
-    <template v-if="+options.timeout <= 0" v-slot:action="{ attrs }">
+    <template v-slot:action="{ attrs }">
       <!-- 本文 -->
       <template v-if="typeof closeBtn === 'string'">
         <v-btn v-bind="attrs" :class="color" text @click="close">{{closeBtn}}</v-btn>
@@ -36,8 +36,7 @@ export default {
         // transition: 'fade-transition',
         transition: 'scale-transition',
         timeout: 3000
-      },
-      closeCallback: null
+      }
     }
   },
 
@@ -74,28 +73,28 @@ export default {
       this.show = true
       this.type = 'info'
       this.setOption(options)
-      return this.getCloseCallback()
+      return this.close
     },
 
     warn (options) {
       this.show = true
       this.type = 'warn'
       this.setOption(options)
-      return this.getCloseCallback()
+      return this.close
     },
 
     success (options) {
       this.show = true
       this.type = 'success'
       this.setOption(options)
-      return this.getCloseCallback()
+      return this.close
     },
 
     error (options) {
       this.show = true
       this.type = 'error'
       this.setOption(options)
-      return this.getCloseCallback()
+      return this.close
     },
 
     // 设置 option
@@ -122,20 +121,10 @@ export default {
     close () {
       clearTimeout(this.closeTimeout)
       this.show = false
-      typeof this.closeCallback && this.closeCallback()
       // 考虑到过渡动画，1秒后再销毁
       this.closeTimeout = setTimeout(() => {
         this.$el.remove()
       }, 1000)
-    },
-
-    /* 设置Promise，供页面逻辑注册回调 */
-    getCloseCallback () {
-      return new Promise(resolve => {
-        this.closeCallback = () => {
-          resolve({ active: 'close' })
-        }
-      })
     }
   }
 }

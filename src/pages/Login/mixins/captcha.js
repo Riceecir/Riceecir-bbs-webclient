@@ -6,6 +6,9 @@ export default {
   data () {
     const that = this
     return {
+      loadingStatus: {
+        code: false
+      },
       captcha: {
         text: '',
         data: null
@@ -22,11 +25,13 @@ export default {
 
   methods: {
     /* 初始化验证码 */
-    initCaptcha () {
-      getCaptcha()
-        .then(res => {
-          this.captcha = res.data
-        })
+    async initCaptcha () {
+      if (!this.loadingStatus.code) {
+        this.loadingStatus.code = true
+        const res = await getCaptcha()
+        this.captcha = res.data
+        this.loadingStatus.code = false
+      }
     }
   },
 
