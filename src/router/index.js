@@ -23,6 +23,7 @@ const router = new VueRouter({
   routes
 })
 
+/* 前置钩子函授 */
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title
   next()

@@ -15,9 +15,17 @@ for (const i in snackbar) {
     close = snackbar[i](options)
   }
 }
+
 /* 请求拦截 */
 axios.interceptors.request.use(
   config => {
+    /* get 请求将参数添加至 url */
+    if (config.method.toLocaleLowerCase() === 'get') {
+      const arr = []
+      const { data } = config
+      for (const i in data) arr.push(`${i}=${data[i]}`)
+      if (arr.length > 0) config.url += `?${arr.join('&')}`
+    }
     return config
   },
   error => {
@@ -36,9 +44,9 @@ axios.interceptors.response.use(
     const { data } = res
     const { code, msg } = data
 
-    if (code === 'success') {
+    if (code === 200) {
       return data
-    } else if (code === 'fail') {
+    } else if (code === 500) {
       if (msg) {
         $snackbar.warn({
           top: true,

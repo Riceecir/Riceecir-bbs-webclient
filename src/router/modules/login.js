@@ -12,7 +12,7 @@ export default [
         meta: {
           title: '登录'
         },
-        component: () => import('@/pages/Login/Login.vue')
+        component: () => import('@/pages/Login/Login/index.vue')
       }
     ]
   },
@@ -27,7 +27,7 @@ export default [
         meta: {
           title: '注册'
         },
-        component: () => import('@/pages/Login/Register.vue')
+        component: () => import('@/pages/Login/Register/index.vue')
       }
     ]
   },
@@ -42,7 +42,7 @@ export default [
         meta: {
           title: '找回密码'
         },
-        component: () => import('@/pages/Login/Forget.vue')
+        component: () => import('@/pages/Login/Forget/index.vue')
       }
     ]
   }

@@ -20,22 +20,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$ctx-height: 64px;
 header {
   display: flex;
   align-items: center;
 
   width: 100%;
-  height: $ctx-height;
+  height: $header-height;
   padding: 0 1rem;
 
   border-bottom: 1px solid #E0E0E0;
 
   .logo {
-    width: $ctx-height;
-    height: $ctx-height;
+    width: $header-height;
+    height: $header-height;
 
-    margin: 0 $ctx-height / 2;
+    margin: 0 $header-height / 2;
   }
 
   .nav {

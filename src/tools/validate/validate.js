@@ -32,7 +32,10 @@ validate.password = [
   }
 ]
 // 邮箱
-validate.email = [v => !!v || '邮箱不能为空']
+validate.email = [
+  v => !!v || '邮箱不能为空',
+  v => /.+@.+\..+/.test(v) || '请填写正确的邮箱地址'
+]
 // 手机号
 validate.phone = [v => !!v || '请填写正确的手机号']
 // 验证码

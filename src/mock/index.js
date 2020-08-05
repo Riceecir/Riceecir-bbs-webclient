@@ -9,31 +9,50 @@ Mock.setup({
 
 // 登录api
 Mock.mock(getRegUrl('login'), 'post', options => {
-  console.log(options)
   // 模板
   const template = [
     {
-      code: 'fail',
+      code: 500,
       msg: '登录失败,请检查密码或用户名',
+      error_code: 1101,
       data: {
-        type: 'error'
       }
     },
     {
-      code: 'fail',
+      code: 500,
       msg: '登录失败,用户不存在',
+      error_code: 1102,
       data: {
-        type: 'not user'
       }
     },
     {
       code: 'success',
       msg: '登录成功',
+      error_code: null,
       data: {
         user_name: 'Riceecir',
         nickname: '昵称',
         session: ''
       }
+    }
+  ]
+  return Mock.mock({ 'data|1': template }).data
+})
+// 注册api
+Mock.mock(getRegUrl('register'), 'post', options => {
+  // 模板
+  const template = [
+    {
+      code: 500,
+      msg: '该用户名已存在',
+      error_code: 1201,
+      data: {}
+    },
+    {
+      code: 200,
+      msg: '注册成功',
+      error_code: null,
+      data: {}
     }
   ]
   return Mock.mock({ 'data|1': template }).data

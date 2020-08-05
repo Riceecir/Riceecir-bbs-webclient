@@ -33,6 +33,7 @@ export default {
       // vuetify snackbar 参数
       options: {
         light: true,
+        top: true,
         // transition: 'fade-transition',
         transition: 'scale-transition',
         timeout: 3000

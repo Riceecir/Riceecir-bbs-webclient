@@ -1,7 +1,5 @@
 <template>
   <div class="login-container d-flex flex-column">
-    <!-- <Header /> -->
-
     <!-- 纵向排列，两边对齐，footer始终位于底部 -->
     <div class="d-flex flex-grow-1 flex-column justify-space-between scroll-container" >
       <v-container>
@@ -31,16 +29,11 @@
 </template>
 
 <script>
-// import Header from '@/components/Header/index.vue'
 import Footer from '@/components/Footer/index.vue'
 const configs = {
   forget: [{
-    label: '通过邮箱找回',
-    path: '/forget?type=email'
-  },
-  {
-    label: '通过手机号找回',
-    path: '/forget?type=phone'
+    label: '找回密码',
+    path: '/forget'
   }],
   login: [{
     label: '登入',
@@ -54,7 +47,6 @@ const configs = {
 
 export default {
   components: {
-    // Header,
     Footer
   },
 
