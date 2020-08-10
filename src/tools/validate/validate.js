@@ -39,6 +39,8 @@ validate.email = [
 // 手机号
 validate.phone = [v => !!v || '请填写正确的手机号']
 // 验证码
-validate.captch = [v => !!v || '验证码不能为空']
+validate.captch = [
+  v => !!v || '验证码不能为空'
+]
 
 export default validate

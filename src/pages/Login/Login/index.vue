@@ -9,7 +9,8 @@
         </span>
         <v-input>
           <v-text-field v-model="formData.code" label="验证码" :rules="validations.captch" />
-          <span v-loading="loadingStatus.code" slot="append" class="captch" v-html="captcha.data" @click="initCaptcha" />
+          <!-- <span v-loading="loadingStatus.code" slot="append" class="captch" v-html="captcha.data" @click="initCaptcha" /> -->
+          <Captch v-model="formData.code" ref="captch" />
         </v-input>
         <div>
           <v-btn block color="blue white--text" @click="handleLogin">登入</v-btn>
@@ -24,12 +25,13 @@
 
 <script>
 import API from '@/api/index'
-import captchaMixin from '../mixins/captcha'
+import Captch from '@/components/Captch/index'
 import { getRuleValidate } from '@/tools/validate/index'
 const { login } = API
 
 export default {
-  mixins: [captchaMixin],
+  // mixins: [captchaMixin],
+  components: { Captch },
   data () {
     return {
       loadingStatus: {
@@ -40,11 +42,19 @@ export default {
         password: '',
         code: ''
       },
-      validations: {
-        ...getRuleValidate(['user_name', 'password'])
-      },
       // 关闭弹窗的回调
       close: null
+    }
+  },
+
+  computed: {
+    /* 校验规则 */
+    validations () {
+      const v = {
+        ...getRuleValidate(['user_name', 'password', 'captch'])
+      }
+      v.captch.push(v => (this.$refs.captch ? this.$refs.captch.validate() : false) || '请输入正确的验证码')
+      return v
     }
   },
 
@@ -68,6 +78,7 @@ export default {
         return
       } else { this.loadingStatus.login = true }
       const res = await login()
+      console.log(res)
       if (res.code === 200) {
         this.$snackbar.success({
           msg: res.msg
@@ -80,7 +91,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import url('../scss/index.scss');
-</style>

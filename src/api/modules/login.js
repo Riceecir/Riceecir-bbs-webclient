@@ -1,13 +1,4 @@
-import request from '@/plugins/request/index'
-/**
- * 获取图像验证码
- */
-export const getCaptcha = async function () {
-  return request({
-    url: '/getCaptcha',
-    method: 'GET'
-  })
-}
+import axios from '@/plugins/request/index'
 
 /**
  * 登录
@@ -15,12 +6,8 @@ export const getCaptcha = async function () {
  * @param {String} data.password 密码
  * @param {String} data.code 验证码
  */
-export const login = async function (data = {}) {
-  return request({
-    url: '/login',
-    method: 'POST',
-    data
-  })
+export const login = function (data = {}) {
+  return axios.post('/login', data)
 }
 
 /**
@@ -30,10 +17,6 @@ export const login = async function (data = {}) {
  * @param {String} data.password 密码
  * @param {String} data.code 验证码
  */
-export const register = async function (data = {}) {
-  return request({
-    url: '/register',
-    method: 'POST',
-    data
-  })
+export const register = function (data = {}) {
+  return axios.post('/register', data)
 }
