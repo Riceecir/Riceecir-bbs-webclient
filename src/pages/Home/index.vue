@@ -1,8 +1,11 @@
 <template>
-  <div style="height: 1920px">123</div>
+  <div style="height: 1920px;"></div>
 </template>
 
 <script>
+export default {
+
+}
 </script>
 
 <style>
