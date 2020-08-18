@@ -1,6 +1,6 @@
 import validate from './validate'
 /**
- * @returns {Object} 返回对应 key 值的验证规则
+ * @returns {Object {key: [fn]}} 返回对应 key 值的验证规则
  */
 export function getRuleValidate (key = [], that) {
   const keys = Array.isArray(key) ? key : Object.keys(key)
