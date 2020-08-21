@@ -57,18 +57,19 @@ class HttpRequest {
         /* 根据API约定。只有 code === 200 才算请求完成 */
         const { data } = res
         const { code, msg } = data
-
-        if (code === 200) {
-          return data
-        } else if (code === 500) {
-          if (msg) {
-            $snackbar.warn({
-              top: true,
-              msg: `${data.msg}`
-            })
-          }
-          return Promise.resolve(data)
-        } else return data
+        /* 提示信息 */
+        if ([500].includes(code)) {
+          $snackbar.error({
+            top: true,
+            msg: msg || `error: ${code}`
+          })
+        } else if ([401, 404].includes(code)) {
+          $snackbar.warn({
+            top: true,
+            msg: msg || `error: ${code}`
+          })
+        }
+        return data
       },
 
       error => {
@@ -82,11 +83,15 @@ class HttpRequest {
   }
 
   /* 发起请求 */
-  request (options) {
+  async request (options) {
     const instance = axios.create()
     const newOptions = Object.assign(this.getInstanceConfig(), options)
     this.setInterceptors(instance)
-    return instance(newOptions)
+    try {
+      return await instance(newOptions)
+    } catch (err) {
+      return false
+    }
   }
 
   /* get请求 */

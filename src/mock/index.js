@@ -8,18 +8,18 @@ Mock.setup({
 })
 
 // 登录api
-Mock.mock(getRegUrl('login'), 'post', options => {
+Mock.mock(getRegUrl('login2'), 'post', options => {
   // 模板
   const template = [
     {
-      code: 500,
+      code: 404,
       msg: '登录失败,请检查密码或用户名',
       error_code: 1101,
       data: {
       }
     },
     {
-      code: 500,
+      code: 404,
       msg: '登录失败,用户不存在',
       error_code: 1102,
       data: {

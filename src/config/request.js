@@ -1,5 +1,5 @@
 const HEADER = {
-  'Content-Type': 'application/js111on;charset=UTF-8'
+  'Content-Type': 'application/json;charset=UTF-8'
 }
 
 export default {

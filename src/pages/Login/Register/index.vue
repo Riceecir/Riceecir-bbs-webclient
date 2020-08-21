@@ -21,8 +21,8 @@
           :rules="validations.repeatPassword"
           @click:append="isShowPsw.repeat = !isShowPsw.repeat" />
         <v-input>
-          <v-text-field v-model="formData.code" label="验证码" :rules="validations.captch" />
-          <Captch v-model="formData.code" ref="captch" />
+          <v-text-field v-model="formData.code" label="验证码" :rules="validations.captcha" />
+          <Captcha v-model="formData.code" ref="captcha" />
         </v-input>
         <div>
           <v-btn block color="blue white--text" @click="handRegister">注册</v-btn>
@@ -37,13 +37,13 @@
 
 <script>
 import API from '@/api/index'
-import Captch from '@/components/Captch/index'
+import Captcha from '@/components/Captcha/index'
 
 import { getRuleValidate } from '@/tools/validate/index'
 const { register } = API
 
 export default {
-  components: { Captch },
+  components: { Captcha },
   data () {
     return {
       loadingStatus: {
@@ -72,13 +72,13 @@ export default {
     /* 校验规则 */
     validations () {
       const v = {
-        ...getRuleValidate(['user_name', 'password', 'captch', 'email'])
+        ...getRuleValidate(['user_name', 'password', 'captcha', 'email'])
       }
       v.repeatPassword = [
         ...v.password,
         v => v + '' === this.formData.password + '' || '密码不一致, 请检查'
       ]
-      v.captch.push(v => (this.$refs.captch ? this.$refs.captch.validate() : false) || '请输入正确的验证码')
+      v.captcha.push(v => (this.$refs.captcha ? this.$refs.captcha.validate() : false) || '请输入正确的验证码')
       return v
     }
   },

@@ -5,7 +5,6 @@ import store from './store'
 
 import '@/assets/scss/global.scss'
 import '@/assets/scss/variables.scss'
-import '@/assets/style/global.css'
 import '@/assets/style/reset.css'
 import vuetify from '@/plugins/vuetify'
 import directive from '@/tools/directive/index'

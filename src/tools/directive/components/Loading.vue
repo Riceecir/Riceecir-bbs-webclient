@@ -5,11 +5,6 @@
   </div>
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style lang="scss" scoped>
 .loading-container {
   position: absolute;
@@ -29,7 +24,7 @@ export default {
     left: 0;
     right: 0;
 
-    background-color: rgba($color: #fff, $alpha: 0.7)
+    background-color: rgba($color: #fff, $alpha: 0.8)
   }
 }
 </style>

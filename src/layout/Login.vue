@@ -4,7 +4,7 @@
     <div class="d-flex flex-grow-1 flex-column justify-space-between scroll-container" >
       <v-container>
         <v-row justify="center">
-          <v-col xs="10" sm="7" md="6" lg="5" xl="3">
+          <v-col sm="7" md="6" lg="5" xl="3">
             <div class="content rounded-lg">
               <v-tabs :value="currentTab" height="56" grow>
                 <template v-if="currentTab === '/forget'">

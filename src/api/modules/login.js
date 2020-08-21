@@ -7,7 +7,9 @@ import axios from '@/plugins/request/index'
  * @param {String} data.code 验证码
  */
 export const login = function (data = {}) {
-  return axios.post('/login', data)
+  return axios.post('/login', {
+    data
+  })
 }
 
 /**
@@ -18,5 +20,7 @@ export const login = function (data = {}) {
  * @param {String} data.code 验证码
  */
 export const register = function (data = {}) {
-  return axios.post('/register', data)
+  return axios.post('/register', {
+    data
+  })
 }

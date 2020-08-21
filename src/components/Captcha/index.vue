@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <span v-loading="loadingStatus.code" slot="append" class="captch" v-html="captcha.data" @click="initCaptcha" />
+  <div class="captcha" v-loading="loadingStatus.code">
+    <span slot="append" v-html="captcha.data" @click="initCaptcha" />
   </div>
 </template>
 
@@ -9,6 +9,10 @@ import API from '@/api/index'
 import { v4 as uuidv4 } from 'uuid'
 const { getCaptcha } = API
 
+/** 对外暴露的API
+  * @returns { Function } validate : boolean 验证输入
+  * @returns { Function } resetCaptcha: void 重置验证码
+  */
 export default {
   props: {
     value: {
@@ -52,12 +56,20 @@ export default {
     async initCaptcha () {
       if (!this.loadingStatus.code) {
         this.loadingStatus.code = true
-        const res = await getCaptcha(this.sid)
-        this.captcha = res.data
+        const res = await getCaptcha({
+          sid: this.sid
+        })
+        if (res) {
+          this.captcha = res.data
+        }
         this.loadingStatus.code = false
       }
     },
-
+    /* 对外暴露的API */
+    resetCaptcha () {
+      console.log('1')
+      this.initCaptcha()
+    },
     /* 验证输入是否正确 */
     validate () {
       return (this.value + '').toLocaleLowerCase() === (this.captcha.text + '').toLocaleLowerCase()
@@ -72,7 +84,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.captch {
+.captcha {
   position: relative;
 
   min-width: 150px;
