@@ -7,7 +7,7 @@ export function getRuleValidate (key = [], that) {
   const obj = {}
   for (const i of keys) {
     if (isExistRule(i)) {
-      obj[i] = validate[i]
+      obj[i] = validate[i].slice()
     } else {
       console.info(i, ' 规则不存在')
     }

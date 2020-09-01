@@ -5,7 +5,7 @@ import axios from '@/plugins/request/index'
  * @param {string} params.sid: 本地生成的uuid
  */
 export const getCaptcha = function (params = {}) {
-  return axios.get('getCaptcha', {
+  return axios.get('/public/getCaptcha', {
     params: params
   })
 }
@@ -14,5 +14,5 @@ export const getCaptcha = function (params = {}) {
  * 发送验证消息
  */
 export const sendForgetMsg = function (options = {}) {
-  return axios.get('/sendForgetMsg', options)
+  return axios.get('/public/sendForgetMsg', options)
 }

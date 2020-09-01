@@ -43,6 +43,7 @@ import { getRuleValidate } from '@/tools/validate/index'
 const { register } = API
 
 export default {
+  name: 'Register',
   components: { Captcha },
   data () {
     return {
@@ -71,14 +72,12 @@ export default {
   computed: {
     /* 校验规则 */
     validations () {
-      const v = {
-        ...getRuleValidate(['user_name', 'password', 'captcha', 'email'])
-      }
+      const v = getRuleValidate(['user_name', 'password', 'captcha', 'email'])
       v.repeatPassword = [
         ...v.password,
         v => v + '' === this.formData.password + '' || '密码不一致, 请检查'
       ]
-      v.captcha.push(v => (this.$refs.captcha ? this.$refs.captcha.validate() : false) || '请输入正确的验证码')
+      v.captcha.push(v => (this.$refs.captcha && this.$refs.captcha.validate()) || '请输入正确的验证码')
       return v
     }
   },

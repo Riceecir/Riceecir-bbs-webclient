@@ -14,6 +14,8 @@ const { getCaptcha } = API
   * @returns { Function } resetCaptcha: void 重置验证码
   */
 export default {
+  name: 'Captcha',
+
   props: {
     value: {
       type: [String],
@@ -67,7 +69,6 @@ export default {
     },
     /* 对外暴露的API */
     resetCaptcha () {
-      console.log('1')
       this.initCaptcha()
     },
     /* 验证输入是否正确 */

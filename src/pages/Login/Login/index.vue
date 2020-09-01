@@ -29,7 +29,7 @@ import { getRuleValidate } from '@/tools/validate/index'
 const { login } = API
 
 export default {
-  // mixins: [captchaMixin],
+  name: 'Login',
   components: { Captcha },
   data () {
     return {
@@ -49,10 +49,8 @@ export default {
   computed: {
     /* 校验规则 */
     validations () {
-      const v = {
-        ...getRuleValidate(['user_name', 'password', 'captcha'])
-      }
-      v.captcha.push(() => (this.$refs.captcha ? this.$refs.captcha.validate() : false) || '请输入正确的验证码')
+      const v = getRuleValidate(['user_name', 'password', 'captcha'])
+      v.captcha.push(() => (this.$refs.captcha && this.$refs.captcha.validate()) || '请输入正确的验证码')
       return v
     },
 
@@ -78,21 +76,20 @@ export default {
           timeout: 3000,
           msg: '表单验证失败, 请检查'
         })
-        return
-      } else { this.loadingStatus.login = true }
-      const res = await login({
-        ...this.formData,
-        sid: this.sid
-      })
-      console.log(res)
-      if (res.code === 200) {
-        this.$snackbar.success({
-          msg: res.msg
+      } else {
+        this.loadingStatus.login = true
+        const res = await login({
+          ...this.formData,
+          sid: this.sid
         })
-      } else if ([401, 404].includes(res.code)) {
-        this.$refs.captcha.resetCaptcha()
+
+        if (res.code === 200) {
+          this.$router.replace({ path: '/' })
+        } else if ([401, 404].includes(res.code)) {
+          this.$refs.captcha.resetCaptcha()
+        }
+        this.loadingStatus.login = false
       }
-      this.loadingStatus.login = false
     }
   }
 }
