@@ -1,5 +1,10 @@
 <template>
-  <v-snackbar v-bind="options" v-model="show">
+  <v-snackbar
+    v-model="show"
+    v-bind="options"
+    @mouseenter.native="stopTimeout"
+    @mouseleave.native="setClose"
+  >
     <span class="flex-d align-center">
       <v-icon :class="color" class="icon">{{icon}}</v-icon>
       {{ msg || 'message' }}
@@ -36,8 +41,9 @@ export default {
         top: true,
         // transition: 'fade-transition',
         transition: 'scale-transition',
-        timeout: 3000
-      }
+        timeout: -1
+      },
+      timeout: 3000
     }
   },
 
@@ -102,8 +108,11 @@ export default {
     setOption (options) {
       this.msg = options.msg || ''
       this.closeBtn = options.closeBtn || '关闭'
+      // 不绑定 timeout 来定时关闭
+      this.timeout = options.timeout || 3000
       delete options.msg
       delete options.closeBtn
+      delete options.timeout
       this.options = Object.assign(this.options, options)
       this.setClose()
     },
@@ -111,11 +120,11 @@ export default {
     // 设置关闭时间
     setClose () {
       clearTimeout(this.closeTimeout)
-      if (+this.options.timeout > 0) {
-        this.closeTimeout = setTimeout(() => {
+      this.closeTimeout = setTimeout(() => {
+        if (+this.timeout > 0) {
           this.close()
-        }, +this.options.timeout)
-      }
+        }
+      }, +this.timeout)
     },
 
     // 关闭当前元素并销毁Dom
@@ -126,6 +135,11 @@ export default {
       this.closeTimeout = setTimeout(() => {
         this.$el.remove()
       }, 1000)
+    },
+
+    /* 停止计时关闭 */
+    stopTimeout () {
+      clearTimeout(this.closeTimeout)
     }
   }
 }

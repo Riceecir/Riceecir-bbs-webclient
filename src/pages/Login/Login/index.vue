@@ -84,8 +84,10 @@ export default {
         })
 
         if (res.code === 200) {
+          const user = res.data
+          console.log(user)
           this.$router.replace({ path: '/' })
-        } else if ([401, 404].includes(res.code)) {
+        } else {
           this.$refs.captcha.resetCaptcha()
         }
         this.loadingStatus.login = false

@@ -1,12 +1,30 @@
 <template>
   <v-row justify="center" v-loading="loadingStatus.register">
     <v-col cols="10">
+      <!-- 表单 -->
       <v-form ref="registerForm" autocomplete="off">
-        <v-text-field v-model="formData.user_name" label="用户名" :rules="validations.user_name" />
-        <v-text-field v-model="formData.email" label="邮箱" :rules="validations.email" />
+        <UserNameTextField
+          v-model="formData.user_name"
+          ref="user_name"
+          :error="usable.user_name === false"
+          :error-messages="errorMessages.user_name"
+        />
+        <v-text-field
+          label="邮箱"
+          v-model="formData.email"
+          :rules="validations.email"
+          :error="usable.email === false"
+          :error-messages="errorMessages.email"
+        />
+        <v-text-field
+          v-model="formData.nick_name"
+          label="昵称"
+          :rules="validations.nick_name"
+        />
         <v-text-field
           v-model="formData.password"
           label="密码"
+          placeholder="8 ~ 16位之间"
           :append-icon="isShowPsw.psw ? 'mdi-eye' : 'mdi-eye-off'"
           :type="isShowPsw.psw ? 'text' : 'password'"
           counter="16"
@@ -24,6 +42,7 @@
           <v-text-field v-model="formData.code" label="验证码" :rules="validations.captcha" />
           <Captcha v-model="formData.code" ref="captcha" />
         </v-input>
+        <!-- 操作按钮 -->
         <div>
           <v-btn block color="blue white--text" @click="handRegister">注册</v-btn>
           <router-link to="/login" tag="div" class="mt-5" replace>
@@ -38,13 +57,13 @@
 <script>
 import API from '@/api/index'
 import Captcha from '@/components/Captcha/index'
-
+import UserNameTextField from './component/UserNameTextField/index'
 import { getRuleValidate } from '@/tools/validate/index'
 const { register } = API
 
 export default {
   name: 'Register',
-  components: { Captcha },
+  components: { Captcha, UserNameTextField },
   data () {
     return {
       loadingStatus: {
@@ -52,6 +71,7 @@ export default {
       },
       formData: {
         user_name: '',
+        nick_name: '',
         password: '',
         repeatPassword: '',
         email: '',
@@ -60,6 +80,16 @@ export default {
       isShowPsw: {
         psw: false,
         repeat: false
+      },
+      // 选项是否可以可用
+      usable: {
+        user_name: true,
+        email: true
+      },
+      // 错误消息
+      errorMessages: {
+        user_name: '',
+        email: ''
       },
       timeout: {
         toLogin: null
@@ -72,13 +102,20 @@ export default {
   computed: {
     /* 校验规则 */
     validations () {
-      const v = getRuleValidate(['user_name', 'password', 'captcha', 'email'])
+      const v = getRuleValidate(['password', 'captcha', 'email', 'nick_name'])
+      v.user_name = [
+        v => this.$refs.user_name.validate()
+      ]
       v.repeatPassword = [
         ...v.password,
         v => v + '' === this.formData.password + '' || '密码不一致, 请检查'
       ]
       v.captcha.push(v => (this.$refs.captcha && this.$refs.captcha.validate()) || '请输入正确的验证码')
       return v
+    },
+
+    sid () {
+      return this.$store.getters['publics/sid']
     }
   },
 
@@ -102,20 +139,48 @@ export default {
         })
         return
       }
+
       this.loadingStatus.register = true
-      const res = await register()
-      if (res.code === 'success') {
+      const res = await register({
+        user_name: this.formData.user_name,
+        nick_name: this.formData.nick_name,
+        email: this.formData.email,
+        password: this.formData.password,
+        code: this.formData.code,
+        sid: this.sid
+      })
+      if (res.code === 200) {
         this.$snackbar.success({
-          msg: res.msg + ' 即将跳转登录'
+          msg: res.msg + ' 即将跳转登录',
+          closeBtn: '我知道了'
         })
+        clearTimeout(this.timeout.toLogin)
         this.timeout.toLogin = setTimeout(() => {
-          this.$router.replace('/login')
-        }, 2000)
-      } else if (res.code === 'fail') {
-        this.initCaptcha()
+          this.$router.replace({ path: '/login' })
+        }, 1000)
+      } else {
+        /* 注册失败后根据失败项显示失败项的提示 */
+        const { failItem, errorTips } = res.data
+        for (const i of failItem) {
+          this.usable[i] = false
+          this.errorMessages[i] = errorTips[i]
+
+          // 做个侦听器，用户输入清楚错误提示
+          const unWatch = this.$watch(`formData.${i}`, (_new) => {
+            this.usable[i] = true
+            this.errorMessages[i] = ''
+            // 只侦听一次
+            unWatch()
+          })
+        }
+        this.$refs.captcha.resetCaptcha()
       }
       this.loadingStatus.register = false
     }
+  },
+
+  beforeDestroy () {
+    clearTimeout(this.timeout.toLogin)
   }
 }
 </script>

@@ -1,21 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { getDataType } from '@/utils/utils.js'
+import store from '@/store/index'
+import routes from './routes'
+import { Throttle } from '@/utils/utils.js'
 import { routerMode } from '@/config'
 Vue.use(VueRouter)
-
-const routes = []
-
-const context = require.context('./modules', false, /\.js$/)
-context.keys().forEach(item => {
-  const route = context(item).default
-  /* 根据不同的路由列表正确的添加 */
-  if (getDataType(route) === 'array') {
-    routes.push(...route)
-  } else {
-    routes.push(route)
-  }
-})
 
 const router = new VueRouter({
   mode: routerMode,
@@ -23,10 +12,20 @@ const router = new VueRouter({
   routes
 })
 
-/* 前置钩子函授 */
+/* 前置钩子函数 */
 router.beforeEach((to, from, next) => {
+  store.commit('publics/setTopLineear', true)
   document.title = to.meta.title
   next()
+})
+
+/* 后置钩子函数 */
+const throttle = new Throttle()
+router.afterEach(() => {
+  // 延迟关闭
+  throttle(() => {
+    store.commit('publics/setTopLineear', false)
+  }, 1000)
 })
 
 export default router

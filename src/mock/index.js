@@ -57,3 +57,21 @@ Mock.mock(getRegUrl('register'), 'post', options => {
   ]
   return Mock.mock({ 'data|1': template }).data
 })
+// 检查用户名是否可用
+Mock.mock(getRegUrl('checkUserName'), 'get', options => {
+  const template = [
+    {
+      code: 200,
+      data: true,
+      error_code: null,
+      msg: '用户名可用'
+    },
+    {
+      code: 200,
+      data: false,
+      error_code: null,
+      msg: '用户名已存在'
+    }
+  ]
+  return Mock.mock({ 'data|1': template }).data
+})

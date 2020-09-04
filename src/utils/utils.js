@@ -80,18 +80,50 @@ export const setRoutePathParams = (object) => {
 }
 
 /* 函数防抖 */
-let _function = false
-export const debounce = (callback, time = 300) => {
-  clearTimeout(_function)
-  _function = setTimeout(callback, time)
+export class Debounce {
+  constructor () {
+    this._function = false
 
-  /* 返回终止的方法 */
-  return {
-    stop: () => {
-      clearTimeout(_function)
+    return this.start.bind(this)
+  }
+
+  start (callback, time = 300) {
+    clearTimeout(this._function)
+    this._function = setTimeout(callback, time)
+
+    /* 返回终止的方法 */
+    return {
+      stop: () => {
+        clearTimeout(this._function)
+      }
     }
   }
 }
+
+/* 函数防抖 */
+export const debounce = new Debounce()
+
+/* 函数节流 */
+export class Throttle {
+  constructor () {
+    this.canRun = true
+
+    return this.start.bind(this)
+  }
+
+  start (callback, time = 300) {
+    if (this.canRun) {
+      this.canRun = false
+      setTimeout(() => {
+        this.canRun = true
+        callback()
+      }, time)
+    }
+  }
+}
+
+/* 函数节流 */
+export const throttle = new Throttle()
 
 /* 对象'.'表示法字符串查询数据 */
 export const getValueOfKey = (data, key) => {

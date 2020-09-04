@@ -9,6 +9,7 @@ export function getRuleValidate (key = [], that) {
     if (isExistRule(i)) {
       obj[i] = validate[i].slice()
     } else {
+      obj[i] = []
       console.info(i, ' 规则不存在')
     }
   }
