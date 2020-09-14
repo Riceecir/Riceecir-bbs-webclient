@@ -94,8 +94,21 @@ class HttpRequest {
     }
   }
 
+  /**
+   * 对参数进行encode
+   * @param { Object }
+   */
+  encodeParams (params) {
+    if (params) {
+      for (const i in params) {
+        params[i] = encodeURIComponent(params[i])
+      }
+    }
+  }
+
   /* get请求 */
   get (url, data = {}) {
+    this.encodeParams(data.params)
     return this.request({
       method: 'get',
       url,

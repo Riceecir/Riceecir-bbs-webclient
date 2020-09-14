@@ -45,5 +45,10 @@ export default [
         component: () => import('@/pages/Login/Forget/index.vue')
       }
     ]
+  },
+
+  {
+    path: '/test/:id/:name/:sex',
+    component: Login
   }
 ]

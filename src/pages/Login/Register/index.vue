@@ -129,9 +129,9 @@ export default {
   methods: {
     // 处理注册
     async handRegister () {
-      typeof this.close === 'function' && this.close()
       if (this.loadingStatus.register) return
       if (!this.$refs.registerForm.validate()) {
+        typeof this.close === 'function' && this.close()
         this.close = this.$snackbar.error({
           absolute: true,
           timeout: 3000,

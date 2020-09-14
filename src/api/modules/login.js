@@ -24,3 +24,15 @@ export const register = function (data = {}) {
     data
   })
 }
+
+/**
+ * 发送邮件或手机号找回密码
+ * @param {string} data.type: 查找方式类型： 'phone'：手机号、'email'：邮箱
+ * @param {string} body.email:  邮箱
+ * @param {string} body.phone:  手机号码
+ */
+export const sendForgetMsg = function (data = {}) {
+  return axios.post('/login/sendForgetMsg', {
+    data
+  })
+}

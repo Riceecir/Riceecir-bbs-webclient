@@ -12,9 +12,9 @@
           <Captcha v-model="formData.code" ref="captcha" />
         </v-input>
         <div>
-          <v-btn block color="blue white--text" @click="handleLogin">登入</v-btn>
+          <v-btn block depressed color="blue white--text" @click="handleLogin">登入</v-btn>
           <router-link to="/register" tag="div" class="mt-5">
-            <v-btn block text color="grey darken-3">注册</v-btn>
+            <v-btn block depressed text color="grey darken-3">注册</v-btn>
           </router-link>
         </div>
       </v-form>
@@ -69,6 +69,7 @@ export default {
   methods: {
     // 处理登录
     async handleLogin () {
+      if (this.loadingStatus.login) return
       if (!this.$refs.loginForm.validate()) {
         typeof this.close === 'function' && this.close()
         this.close = this.$snackbar.error({
@@ -93,6 +94,10 @@ export default {
         this.loadingStatus.login = false
       }
     }
+  },
+
+  mounted () {
+    console.log(this.$refs.captcha)
   }
 }
 </script>

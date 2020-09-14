@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) => {
 /* 后置钩子函数 */
 const throttle = new Throttle()
 router.afterEach(() => {
-  // 延迟关闭
+  // 延迟关闭加载进度条
   throttle(() => {
     store.commit('publics/setTopLineear', false)
   }, 1000)
