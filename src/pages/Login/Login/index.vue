@@ -79,13 +79,13 @@ export default {
         })
       } else {
         this.loadingStatus.login = true
-        const res = await login({
+        const { data, code } = await login({
           ...this.formData,
           sid: this.sid
         })
 
-        if (res.code === 200) {
-          const user = res.data
+        if (code === 200) {
+          const user = data
           console.log(user)
           this.$router.replace({ path: '/' })
         } else {

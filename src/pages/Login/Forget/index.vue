@@ -57,15 +57,14 @@ export default {
         })
       } else {
         this.loadingStatus.sending = true
-        const res = await sendForgetMsg({
+        const { code, msg } = await sendForgetMsg({
           type: 'email',
           ...this.formData
         })
-        console.log(res)
-        if (res.code === 200) {
+        if (code === 200) {
           this.$snackbar.success({
             timeout: 3000,
-            msg: res.msg
+            msg: msg
           })
         }
 

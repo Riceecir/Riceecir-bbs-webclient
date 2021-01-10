@@ -141,7 +141,7 @@ export default {
       }
 
       this.loadingStatus.register = true
-      const res = await register({
+      const { data, msg, code } = await register({
         user_name: this.formData.user_name,
         nick_name: this.formData.nick_name,
         email: this.formData.email,
@@ -149,9 +149,9 @@ export default {
         code: this.formData.code,
         sid: this.sid
       })
-      if (res.code === 200) {
+      if (code === 200) {
         this.$snackbar.success({
-          msg: res.msg + ' 即将跳转登录',
+          msg: msg + ' 即将跳转登录',
           closeBtn: '我知道了'
         })
         clearTimeout(this.timeout.toLogin)
@@ -160,7 +160,7 @@ export default {
         }, 1000)
       } else {
         /* 注册失败后根据失败项显示失败项的提示 */
-        const { failItem, errorTips } = res.data
+        const { failItem, errorTips } = data
         for (const i of failItem) {
           this.usable[i] = false
           this.errorMessages[i] = errorTips[i]

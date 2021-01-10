@@ -14,14 +14,14 @@ Mock.mock(getRegUrl('login2'), 'post', options => {
     {
       code: 404,
       msg: '登录失败,请检查密码或用户名',
-      error_code: 1101,
+      error_code: 1000,
       data: {
       }
     },
     {
       code: 404,
       msg: '登录失败,用户不存在',
-      error_code: 1102,
+      error_code: 1000,
       data: {
       }
     },
@@ -45,7 +45,7 @@ Mock.mock(getRegUrl('register'), 'post', options => {
     {
       code: 500,
       msg: '该用户名已存在',
-      error_code: 1201,
+      error_code: 1000,
       data: {}
     },
     {

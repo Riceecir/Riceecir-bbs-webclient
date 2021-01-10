@@ -1,13 +1,14 @@
 <template>
   <footer>
     <p>
-      <a href="/" target="_blank">Riceecir社区</a> {{year}} &copy;
+      <a href="/" target="_blank">Riceecir社区</a>
+      <span>{{year}} &copy;</span>
       <a href="/" target="_blank">个人出品</a>
     </p>
     <p>
-      <a href="/" target="_blank">科技计划</a>
+      <a href="/" target="_blank">凑数</a>
       <a href="/" target="_blank">联系方式</a>
-      <a href="/" target="_blank">微信公众号</a>
+      <a href="/" target="_blank">这也是凑数</a>
     </p>
   </footer>
 </template>

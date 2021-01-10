@@ -75,7 +75,7 @@ class HttpRequest {
       error => {
         $snackbar.error({
           top: true,
-          msg: `发起请求出错${error.message}`
+          msg: `请求出错: ${error.message}`
         })
         return Promise.reject(error)
       }
